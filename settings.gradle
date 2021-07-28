@@ -1,0 +1,2 @@
+rootProject.name = "AndroidFloatLog"
+include ':app'

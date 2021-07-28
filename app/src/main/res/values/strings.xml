@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">AndroidFloatLog</string>
+    <string name="show_log">展示Log</string>
+    <string name="log_touchable">Log可触</string>
+    <string name="clear_log">清空Log</string>
+    <string name="open_float_view">打开悬浮Log</string>
+    <string name="close_float_view">关闭悬浮Log</string>
+    <string name="open_bottom_view">打开底部Log</string>
+    <string name="close_bottom_view">关闭底部Log</string>
+    <string name="bottom_title">日志(单击展开收起;双击清空日志;拖动改变高度)</string>
+</resources>
