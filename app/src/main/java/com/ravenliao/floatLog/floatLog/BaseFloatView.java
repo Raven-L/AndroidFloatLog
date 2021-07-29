@@ -88,6 +88,7 @@ public abstract class BaseFloatView {
         if (inflate != null && hasCreated) {
             windowManager.removeView(inflate);
             inflate = null;
+            hasCreated = false;
         }
     }
 
