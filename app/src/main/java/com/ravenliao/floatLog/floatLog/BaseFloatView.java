@@ -14,7 +14,7 @@ import static android.view.WindowManager.LayoutParams.TYPE_TOAST;
 
 public abstract class BaseFloatView {
     Context context;
-    WindowManager windowManager;
+    static WindowManager windowManager;
     WindowManager.LayoutParams layoutParams;
 
     View inflate;
@@ -84,7 +84,12 @@ public abstract class BaseFloatView {
         inflate.setVisibility(View.GONE);
     }
 
-    public abstract void destroy();
+    public void destroy() {
+        if (inflate != null && hasCreated) {
+            windowManager.removeView(inflate);
+            inflate = null;
+        }
+    }
 
     private void initLayoutParams() {
         layoutParams = new WindowManager.LayoutParams();

@@ -36,11 +36,13 @@ public class ControlView extends BaseFloatView {
         show(Gravity.START | Gravity.TOP, point.x, point.y / 3);
     }
 
+    @Override
     public void destroy() {
         logView.hide();
         logView.destroy();
         logView = null;
-        this.hide();
+        hide();
+        super.destroy();
     }
 
     public void clearLog() {

@@ -21,9 +21,11 @@ public class LogView extends BaseFloatView {
         initRecyclerView();
     }
 
+    @Override
     public void destroy() {
         logAdapter.clearLog();
         logAdapter = null;
+        super.destroy();
     }
 
     @Override

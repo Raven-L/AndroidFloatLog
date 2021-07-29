@@ -33,10 +33,12 @@ public class BottomLogView extends BaseFloatView {
         show(Gravity.BOTTOM, 0, 0);
     }
 
+    @Override
     public void destroy() {
         logAdapter.clearLog();
         logAdapter = null;
         hide();
+        super.destroy();
     }
 
     public FLog.Printer getLogPrinter() {
