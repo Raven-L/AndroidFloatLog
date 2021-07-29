@@ -25,11 +25,11 @@ public class BottomLogView extends BaseFloatView {
         super(context, R.layout.view_bottom_log, true);
         initListener();
         initRecyclerView();
+        initSize();
     }
 
     @Override
     public synchronized void show() {
-        initSize();
         show(Gravity.BOTTOM, 0, 0);
     }
 
