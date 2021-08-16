@@ -5,113 +5,134 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
-import com.ravenliao.floatLog.floatLog.BaseFloatView;
-import com.ravenliao.floatLog.floatLog.BottomLogView;
-import com.ravenliao.floatLog.floatLog.ControlView;
-import com.ravenliao.floatLog.floatLog.FLog;
-import com.ravenliao.floatLog.floatLog.FloatPermission;
+import com.ravenliao.floatLog.floatType.FloatPermission;
+import com.ravenliao.floatLog.log.FLog;
+import com.ravenliao.floatLog.utils.ForeBackGroundUtil;
+import com.ravenliao.floatLog.utils.LogSwitcher;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "MainActivity";
+import java.text.MessageFormat;
+
+public class MainActivity extends BaseActivity implements View.OnClickListener {
+    private final String TAG = "MainActivity" + ForeBackGroundUtil.get().getActivityLevel();
     private static final int REQUEST_CODE_FLOAT_PERMISSION = 100;
 
-    private Button floatViewBtn;
-    private Button bottomViewBtn;
+    private @LogSwitcher.LogType
+    int logType = LogSwitcher.LogType.FloatLog;
+    private boolean isShow = false;
 
-    private ControlView logView;
-    private BottomLogView bottomLogView;
+    private TextView txt;
+    private Button setLogBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        (floatViewBtn = findViewById(R.id.btn_float_View)).setOnClickListener(this);
-        (bottomViewBtn = findViewById(R.id.btn_bottom_View)).setOnClickListener(this);
+        LogSwitcher.get().setContext(this);
+
+        initView();
+
+    }
+
+
+
+    private void initView() {
+        findViewById(R.id.btn_log).setOnClickListener(this);
+        findViewById(R.id.btn_print1).setOnClickListener(this);
+        findViewById(R.id.btn_print2).setOnClickListener(this);
+        Button openActivity = findViewById(R.id.btn_open_activity);
+        openActivity.setOnClickListener(this);
+        openActivity.setText(MessageFormat.format("{0}{1}", getString(R.string.open_activity), ForeBackGroundUtil.get().getActivityLevel()));
+
+        txt = findViewById(R.id.txt_illustrate);
+        setLogBtn = findViewById(R.id.btn_log);
+        setButtonName(LogSwitcher.get().isShow());
+    }
+
+    private void initRadioGroup() {
+        ((RadioButton) findViewById(R.id.rb_float_log)).setChecked(LogSwitcher.get().getType() == LogSwitcher.LogType.FloatLog);
+        ((RadioButton) findViewById(R.id.rb_bottom_log)).setChecked(LogSwitcher.get().getType() == LogSwitcher.LogType.BottomFloatLog);
+        ((RadioButton) findViewById(R.id.rb_view_log)).setChecked(LogSwitcher.get().getType() == LogSwitcher.LogType.ViewLog);
+
+        ((RadioGroup) findViewById(R.id.radioGroup)).setOnCheckedChangeListener((group, checkedId) -> {
+            if (checkedId == R.id.rb_float_log) {
+                logType = LogSwitcher.LogType.FloatLog;
+                txt.setText(R.string.log_float_illustrate);
+                if (FloatPermission.isNoPermission(this)) {
+                    isShow = false;
+                    setButtonName(false);
+
+                }
+            }
+            if (checkedId == R.id.rb_bottom_log) {
+                logType = LogSwitcher.LogType.BottomFloatLog;
+                txt.setText(R.string.log_bottom_illustrate);
+                if (FloatPermission.isNoPermission(this)) {
+                    isShow = false;
+                    setButtonName(false);
+                }
+            } else if (checkedId == R.id.rb_view_log) {
+                logType = LogSwitcher.LogType.ViewLog;
+                txt.setText(R.string.log_view_illustrate);
+                setLogDisplay(LogSwitcher.get().isShow());
+            }
+            LogSwitcher.get().switchType(logType);
+        });
     }
 
     @Override
     public void onClick(View v) {
-        BaseFloatView view;
-        int index;
-        if (v.getId() == R.id.btn_float_View) {
-            view = logView;
-            index = 0;
-        } else if (v.getId() == R.id.btn_bottom_View) {
-            view = bottomLogView;
-            index = 1;
+
+        if (v.getId() == R.id.btn_print1) {
+            FLog.i(TAG, "你按下了按钮1");
+        } else if (v.getId() == R.id.btn_print2) {
+            FLog.e(TAG, "你按下了按钮2");
+        } else if (v.getId() == R.id.btn_open_activity) {
+            Intent start = new Intent(MainActivity.this, MainActivity.class);
+            startActivity(start);
+        } else if (v.getId() == R.id.btn_log) {
+            isShow = !isShow;
+            if (logType != LogSwitcher.LogType.ViewLog) {
+                if (applyPermission()) {
+                    isShow = false;
+                }
+            } else {
+                setLogDisplay(isShow);
+            }
+            LogSwitcher.get().displayLog(isShow);
+            setButtonName(isShow);
         } else {
             throw new IllegalStateException("No such View!");
         }
-        if (view == null) {
-            if (!FloatPermission.check(this)) {
-                Toast.makeText(this, "请先允许悬浮框权限!", Toast.LENGTH_LONG).show();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    FloatPermission.apply(this, REQUEST_CODE_FLOAT_PERMISSION);
-                } else {
-                    FloatPermission.openAppSettingIntent(this);
-                }
+    }
+
+    private void setButtonName(boolean isOpen) {
+        setLogBtn.setText(isOpen ? R.string.close_log : R.string.open_log);
+    }
+
+    /**
+     * 检查若没有权限并申请权限
+     *
+     * @return 去申请则返回真
+     */
+    private boolean applyPermission() {
+        if (isShow && FloatPermission.isNoPermission(this)) {
+            Toast.makeText(this, "请先允许悬浮框权限!", Toast.LENGTH_LONG).show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                FloatPermission.apply(this, REQUEST_CODE_FLOAT_PERMISSION);
             } else {
-                switch (index) {
-                    case 0: {
-                        destroyBottomLog();
-                        openFloatLog();
-                        break;
-                    }
-                    case 1: {
-                        destroyFloatLog();
-                        openBottomLog();
-                        break;
-                    }
-                }
+                FloatPermission.openAppSettingIntent(this);
             }
-        } else {
-            switch (index) {
-                case 0: {
-                    destroyFloatLog();
-                    break;
-                }
-                case 1: {
-                    destroyBottomLog();
-                    break;
-                }
-            }
+            return true;
         }
-    }
-
-    private void openFloatLog() {
-        if (logView != null) return;
-        logView = new ControlView(this);
-        FLog.setPrinter(logView.getLogPrinter());
-        floatViewBtn.setText(R.string.close_float_view);
-        logView.show();
-    }
-
-    private void openBottomLog() {
-        if (bottomLogView != null) return;
-        bottomLogView = new BottomLogView(this);
-        FLog.setPrinter(bottomLogView.getLogPrinter());
-        bottomViewBtn.setText(R.string.close_bottom_view);
-        bottomLogView.show();
-    }
-
-    private void destroyFloatLog() {
-        if (logView == null) return;
-        logView.destroy();
-        logView = null;
-        floatViewBtn.setText(R.string.open_float_view);
-    }
-
-    private void destroyBottomLog() {
-        if (bottomLogView == null) return;
-        bottomLogView.destroy();
-        bottomLogView = null;
-        bottomViewBtn.setText(R.string.open_bottom_view);
+        return false;
     }
 
     @Override
@@ -124,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        initRadioGroup();
+        initLog();
         FLog.i(TAG, "onResume: 333333333333333333333333333333333333333333333333333333333333333333333333");
     }
 
@@ -148,12 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (logView != null) {
-            logView.destroy();
-        }
-        if (bottomLogView != null) {
-            bottomLogView.destroy();
-        }
+        LogSwitcher.get().displayLog(false);
     }
 
 
@@ -161,8 +179,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE_FLOAT_PERMISSION) {
-            if (!FloatPermission.check(this)) {
+            if (FloatPermission.isNoPermission(this)) {
                 Toast.makeText(this, "授权失败", Toast.LENGTH_SHORT).show();
+                isShow = false;
+            } else {
+                Toast.makeText(this, "授权成功, 请重新打开", Toast.LENGTH_SHORT).show();
             }
         }
     }

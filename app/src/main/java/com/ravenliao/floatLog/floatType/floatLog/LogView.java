@@ -1,4 +1,4 @@
-package com.ravenliao.floatLog.floatLog;
+package com.ravenliao.floatLog.floatType.floatLog;
 
 import android.content.Context;
 import android.view.View;
@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ravenliao.floatLog.R;
-import com.ravenliao.floatLog.floatLog.FLog.LogMsg;
+import com.ravenliao.floatLog.floatType.BaseFloatView;
+import com.ravenliao.floatLog.log.FLog.LogMsg;
+import com.ravenliao.floatLog.log.LogAdapter;
 
 public class LogView extends BaseFloatView {
     public MyAdapter logAdapter;
@@ -55,6 +57,7 @@ public class LogView extends BaseFloatView {
     private void initRecyclerView() {
         logsView = inflate.findViewById(R.id.recycler_logs);
         logsView.setVerticalScrollBarEnabled(true);
+        logsView.setItemAnimator(null);//取消动画, 避免日志多时产生重叠
         logAdapter = new MyAdapter(context);
         logsView.setAdapter(logAdapter);
         logsView.setLayoutManager(new LinearLayoutManager(context));
@@ -72,8 +75,8 @@ public class LogView extends BaseFloatView {
         }
 
         @Override
-        public void printLog(LogMsg log) {
-            super.printLog(log);
+        public void print(LogMsg log) {
+            super.print(log);
             if (shouldShow) {
                 show();
             }

@@ -1,4 +1,4 @@
-package com.ravenliao.floatLog.floatLog;
+package com.ravenliao.floatLog.floatType;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,13 +11,13 @@ import androidx.annotation.RequiresApi;
 
 public class FloatPermission {
     /**
-     * @return 有权限返回true.
+     * @return 无权限返回true.
      */
-    public static boolean check(Context context) {
+    public static boolean isNoPermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return Settings.canDrawOverlays(context);
+            return !Settings.canDrawOverlays(context);
         }
-        return true;
+        return false;
     }
 
     private static Uri getPackageName(Context context) {

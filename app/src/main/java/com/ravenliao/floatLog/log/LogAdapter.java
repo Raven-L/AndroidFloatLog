@@ -1,5 +1,6 @@
-package com.ravenliao.floatLog.floatLog;
+package com.ravenliao.floatLog.log;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ravenliao.floatLog.R;
+import com.ravenliao.floatLog.log.FLog.FLogPrinter;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
 
-class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> implements FLog.Printer {
+public class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> implements FLogPrinter {
     private static final int LOG_MAX_COUNT = 100;
     private static int COLOR_LOG_RED;
     private static int COLOR_LOG_WHITE;
@@ -24,18 +26,23 @@ class LogAdapter extends RecyclerView.Adapter<LogAdapter.LogViewHolder> implemen
     private final LinkedList<FLog.LogMsg> logs;
 
     public LogAdapter(Context context) {
-        logs = new LinkedList<>();
+        this(context, new LinkedList<>());
+    }
+
+    public LogAdapter(Context context, LinkedList<FLog.LogMsg> logs) {
+        this.logs = new LinkedList<>(logs);
         COLOR_LOG_RED = context.getResources().getColor(R.color.log_red);
         COLOR_LOG_WHITE = context.getResources().getColor(R.color.log_white);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void clearLog() {
         logs.clear();
         notifyDataSetChanged();
     }
 
     @Override
-    public void printLog(FLog.LogMsg log) {
+    public void print(FLog.LogMsg log) {
         if (logs.size() >= LOG_MAX_COUNT) {
             logs.removeLast();
         }

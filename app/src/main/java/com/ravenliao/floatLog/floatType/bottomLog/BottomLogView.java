@@ -1,4 +1,4 @@
-package com.ravenliao.floatLog.floatLog;
+package com.ravenliao.floatLog.floatType.bottomLog;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
@@ -6,11 +6,15 @@ import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ravenliao.floatLog.R;
+import com.ravenliao.floatLog.floatType.BaseFloatView;
+import com.ravenliao.floatLog.log.FLog;
+import com.ravenliao.floatLog.log.LogAdapter;
 
 public class BottomLogView extends BaseFloatView {
 
@@ -23,6 +27,7 @@ public class BottomLogView extends BaseFloatView {
 
     public BottomLogView(Context context) {
         super(context, R.layout.view_bottom_log, true);
+        ((TextView) inflate.findViewById(R.id.txt_log_title)).setText(R.string.bottom_title);
         initListener();
         initRecyclerView();
         initSize();
@@ -39,11 +44,6 @@ public class BottomLogView extends BaseFloatView {
         logAdapter = null;
         hide();
         super.destroy();
-    }
-
-    public FLog.Printer getLogPrinter() {
-        if (logAdapter == null) throw new IllegalStateException("LogAdapter is null");
-        return logAdapter;
     }
 
     private void initListener() {
@@ -104,6 +104,7 @@ public class BottomLogView extends BaseFloatView {
         logsView.setVerticalScrollBarEnabled(true);
         logAdapter = new MyAdapter(context);
         logsView.setAdapter(logAdapter);
+        logsView.setItemAnimator(null);
         logsView.setLayoutManager(new LinearLayoutManager(context));
     }
 
@@ -137,8 +138,8 @@ public class BottomLogView extends BaseFloatView {
         }
 
         @Override
-        public void printLog(FLog.LogMsg log) {
-            super.printLog(log);
+        public void print(FLog.LogMsg log) {
+            super.print(log);
             logsView.scrollToPosition(0);
         }
     }

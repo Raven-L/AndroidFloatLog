@@ -1,22 +1,27 @@
-package com.ravenliao.floatLog.floatLog;
+package com.ravenliao.floatLog.floatType.floatLog;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Point;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-
-import androidx.appcompat.widget.SwitchCompat;
+import android.widget.Switch;
 
 import com.ravenliao.floatLog.R;
+import com.ravenliao.floatLog.floatType.BaseFloatView;
+import com.ravenliao.floatLog.log.FLog.FLogPrinter;
 
 /**
  * LogView的控制类, 控制其显示和是否可触
  */
 public class ControlView extends BaseFloatView {
 
-    SwitchCompat showLogView;
-    SwitchCompat logTouchableView;
+    /**
+     * 使用SwitchCompat需要传入Activity的Context, 否则会奔溃
+     */
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
+    Switch showLogView, logTouchableView;
     Button clearLogBtn;
 
     LogView logView;
@@ -49,7 +54,7 @@ public class ControlView extends BaseFloatView {
         logView.logAdapter.clearLog();
     }
 
-    public FLog.Printer getLogPrinter() {
+    public FLogPrinter getLogPrinter() {
         if (logView == null) throw new IllegalStateException("LogView is null");
         return logView.logAdapter;
     }

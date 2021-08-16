@@ -1,11 +1,30 @@
 <resources>
     <string name="app_name">AndroidFloatLog</string>
+
+    <string name="open_log">打开Log</string>
+    <string name="close_log">关闭Log</string>
+
+    <string name="open_activity">打开新Activity</string>
+    <string name="close_activity">关闭新Activity</string>
+
+    <string name="print1">打印Log1</string>
+    <string name="print2">打印Log2</string>
+
+    <string name="log_float">悬浮Log</string>
+    <string name="log_float_illustrate">悬浮Log使用顺序: \n  1.点击"打开LOG",若无权限会打开权限设置;\n 2. 打开"Log 可触"可移动Log或滑动Log内容;\n \n 注: \n 1. 切换前后台可以添加新的log;\n  2. 要移动两个悬浮窗的位置注意要触控边缘, 否则无法触发移动; \n  3. 当"Log可触"关闭时, 可透过Log窗口点击下方的控件;
+</string>
     <string name="show_log">展示Log</string>
     <string name="log_touchable">Log可触</string>
     <string name="clear_log">清空Log</string>
-    <string name="open_float_view">打开悬浮Log</string>
-    <string name="close_float_view">关闭悬浮Log</string>
-    <string name="open_bottom_view">打开底部Log</string>
-    <string name="close_bottom_view">关闭底部Log</string>
+
+    <string name="log_bottom">底部悬浮Log</string>
+    <string name="log_bottom_illustrate">底部悬浮Log使用顺序: \n  1.点击"打开LOG",若无权限会打开权限设置;\n 2. 根据提示操作标题栏执行相应功能;\n \n 注: \n 1. 切换前后台可以添加新的log;\n  2. 改变高度时直接滑动即可不需要长按.
+</string>
     <string name="bottom_title">日志(单击展开收起;双击清空日志;拖动改变高度)</string>
+
+    <string name="log_view">View型Log</string>
+    <string name="bottom_view_title">日志(单击清空日志)</string>
+    <string name="log_view_illustrate">View型Log使用顺序: \n  1.点击"打开LOG"(该Log不需要悬浮窗权限);\n \n 注: \n 1. 切换前后台可以添加新的log;
+</string>
+
 </resources>

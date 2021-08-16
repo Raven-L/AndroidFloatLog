@@ -7,35 +7,110 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/txt_illustrate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="left"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
         android:padding="10dp"
-        android:text='悬浮Log使用顺序: \n1.点击"打开悬浮LOG",若无权限会打开权限设置;\n2.打开"展示Log"开关;\n3. 打开"Log 可触"可移动Log或滑动Log内容;\n\n注: \n1. 切换前后台可以添加新的log;\n 2. 要移动两个悬浮窗的位置注意要触控边缘, 否则无法触发移动; \n 3. 当"Log可触"关闭时, 可透过Log窗口点击下方的控件;'
+        android:singleLine="false"
+        android:text="@string/log_float_illustrate"
         android:textSize="20sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_open_activity" />
 
     <Button
-        android:id="@+id/btn_float_View"
+        android:id="@+id/btn_log"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/open_float_view"
+        android:layout_marginTop="8dp"
+        android:text="@string/open_log"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <Button
-        android:id="@+id/btn_bottom_View"
+        android:id="@+id/btn_open_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="@string/open_bottom_view"
+        android:layout_marginTop="8dp"
+        android:text="@string/open_activity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_float_View" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_print1" />
+
+    <Button
+        android:id="@+id/btn_print1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/print1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_log" />
+
+    <Button
+        android:id="@+id/btn_print2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:text="@string/print2"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_print1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_print1" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/rb_float_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/log_float" />
+
+        <RadioButton
+            android:id="@+id/rb_bottom_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/log_bottom" />
+
+        <RadioButton
+            android:id="@+id/rb_view_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/log_view" />
+    </RadioGroup>
+
+    <com.ravenliao.floatLog.viewLog.LogView
+        android:id="@+id/logView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,4 +1,7 @@
-package com.ravenliao.floatLog.floatLog;
+package com.ravenliao.floatLog.floatType;
+
+import static android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+import static android.view.WindowManager.LayoutParams.TYPE_TOAST;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -9,15 +12,12 @@ import android.view.WindowManager;
 
 import androidx.annotation.LayoutRes;
 
-import static android.view.WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-import static android.view.WindowManager.LayoutParams.TYPE_TOAST;
-
 public abstract class BaseFloatView {
-    Context context;
-    static WindowManager windowManager;
-    WindowManager.LayoutParams layoutParams;
+    protected Context context;
+    protected WindowManager windowManager;
+    protected WindowManager.LayoutParams layoutParams;
 
-    View inflate;
+    protected View inflate;
 
     private boolean hasCreated = false;
 
@@ -129,7 +129,7 @@ public abstract class BaseFloatView {
     /**
      * 实现了可拖动的onTouchListener.
      */
-    class DraggableListener implements View.OnTouchListener {
+    public class DraggableListener implements View.OnTouchListener {
         private float lastX;
         private float lastY;
 

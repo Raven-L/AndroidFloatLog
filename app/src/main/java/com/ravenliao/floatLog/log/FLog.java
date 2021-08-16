@@ -1,4 +1,4 @@
-package com.ravenliao.floatLog.floatLog;
+package com.ravenliao.floatLog.log;
 
 import android.annotation.SuppressLint;
 import android.os.Handler;
@@ -18,7 +18,7 @@ public class FLog {
 
     private static int printLevel = Log.VERBOSE;
 
-    private static Printer printer;
+    private static FLogPrinter printer;
 
     /**
      * 设置要打印的级别
@@ -29,7 +29,7 @@ public class FLog {
         printLevel = level;
     }
 
-    public static void setPrinter(Printer printer) {
+    public static void setPrinter(FLogPrinter printer) {
         FLog.printer = printer;
     }
 
@@ -103,30 +103,33 @@ public class FLog {
     private final static Handler handler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
-            printer.printLog((LogMsg) msg.obj);
+            printer.print((LogMsg) msg.obj);
         }
     };
 
-    interface Printer {
-        void printLog(LogMsg log);
+    public interface FLogPrinter {
+        void print(LogMsg log);
     }
 
-    static class LogMsg {
+    public static class LogMsg {
         @SuppressLint("ConstantLocale")
         private static final SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss:SSS", Locale.getDefault());
-        private static final Date time = new Date();
+        private static final Date TIME = new Date();
+
 
         private static String getTime() {
-            time.setTime(System.currentTimeMillis());
-            return format.format(time);
+            TIME.setTime(System.currentTimeMillis());
+            return format.format(TIME);
         }
 
         public int level;
         private final String levelString;
+        public String time;
         public String tag;
         public String msg;
 
         public LogMsg(int level, String tag, String msg) {
+            time = getTime();
             this.level = level;
             this.tag = tag;
             this.msg = msg;
@@ -156,7 +159,7 @@ public class FLog {
         @NotNull
         @Override
         public String toString() {
-            return getTime() +
+            return time +
                     ' ' +
                     levelString +
                     "/" +
