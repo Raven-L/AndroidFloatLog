@@ -41,8 +41,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     }
 
-
-
     private void initView() {
         findViewById(R.id.btn_log).setOnClickListener(this);
         findViewById(R.id.btn_print1).setOnClickListener(this);
